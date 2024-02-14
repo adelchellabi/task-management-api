@@ -1,0 +1,23 @@
+# Dependency directories
+node_modules/
+dist/
+
+# Environment variables
+.env
+
+# Editor/IDE files
+.vscode/
+.idea/
+*.suo
+*.ntvs*
+*.njsproj
+*.sln
+
+# Docker files
+docker-compose.override.yml
+
+# macOS
+.DS_Store
+
+# npm logs
+npm-debug.log*
