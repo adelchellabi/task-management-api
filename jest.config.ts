@@ -6,6 +6,11 @@ const config: Config.InitialOptions = {
   testPathIgnorePatterns: ["./node_modules"],
   testRegex: "(/__tests__/.*|(\\.|/)(test|spec))\\.(jsx?|tsx?)$",
   setupFilesAfterEnv: ["./tests/setup.ts"],
+  collectCoverageFrom: [
+    "**/*.{ts,tsx}",
+    "!**/node_modules/**",
+    "!**/vendor/**",
+  ],
 };
 
 export default config;

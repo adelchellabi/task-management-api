@@ -1,11 +1,11 @@
 import mongoose from "mongoose";
+import Logger from "./logger";
 
 export default async function connectDB() {
   const url =
     process.env.NODE_ENV === "test"
       ? process.env.MONGODB_URI_TEST
       : process.env.MONGODB_URI_DEV;
-  console.log("url");
 
   if (!url)
     throw new Error(
@@ -13,10 +13,10 @@ export default async function connectDB() {
     );
 
   try {
-    await mongoose.connect(url);
-    console.log(`Database connected: ${url}`);
+    await mongoose.connect(url, { autoIndex: true });
+    Logger.info(`Database connected: ${url}`);
   } catch (err) {
-    console.error("Error connecting to MongoDB:", err);
+    Logger.error("Error connecting to MongoDB:", err);
     process.exit(1);
   }
 }
