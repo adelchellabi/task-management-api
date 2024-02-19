@@ -1,4 +1,4 @@
-import { CreateTaskDTO, UpdateTaskDto } from "../../dtos/taskDto";
+import { CreateTaskDTO, UpdateTaskDTO } from "../../dtos/taskDto";
 import { TaskDocumentInterface } from "../../models/task";
 
 export interface TaskServiceInterface {
@@ -8,7 +8,7 @@ export interface TaskServiceInterface {
   findTaskById(id: string): Promise<TaskDocumentInterface | null>;
   updateTask(
     id: string,
-    updateData: UpdateTaskDto
+    updateData: UpdateTaskDTO
   ): Promise<TaskDocumentInterface | null>;
   deleteTask(id: string): Promise<boolean>;
 }
