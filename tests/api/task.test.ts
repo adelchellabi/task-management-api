@@ -3,8 +3,8 @@ import app from "../../src/app";
 import Task from "../../src/models/task";
 import { generateFakeTask } from "../data/taskFixture";
 import { StatusCodes } from "http-status-codes";
-import { TaskService } from "../../src/services/task/taskService";
-import { TaskServiceInterface } from "../../src/services/task/taskServiceInterface";
+import { TaskService } from "../../src/services/taskService";
+import { TaskServiceInterface } from "../../src/services/interfaces/taskServiceInterface";
 
 const BASE_URL = "/api/v1/tasks";
 
