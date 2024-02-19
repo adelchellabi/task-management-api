@@ -28,12 +28,14 @@ export class CreateTaskDTO {
   @IsOptional()
   completed?: boolean;
 
-  @IsEnum(taskPriorityValues)
+  @IsEnum(taskPriorityValues, {
+    message: "Priority must be one of the following values: $constraint1",
+  })
   @IsOptional()
   priority?: TaskPriority;
 }
 
-export class UpdateTaskDto {
+export class UpdateTaskDTO {
   @IsOptional()
   @IsString()
   @Length(3)
@@ -56,7 +58,7 @@ export class UpdateTaskDto {
   priority?: TaskPriority;
 }
 
-export class TaskIdDto {
+export class TaskIdDTO {
   @IsMongoId()
   id!: string;
 }

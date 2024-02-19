@@ -1,7 +1,7 @@
 import { Request, Response } from "express";
 import { StatusCodes } from "http-status-codes";
 import { handleDtoValidation } from "../dtos/helper";
-import { CreateTaskDTO, TaskIdDto, UpdateTaskDto } from "../dtos/taskDto";
+import { CreateTaskDTO, TaskIdDTO, UpdateTaskDTO } from "../dtos/taskDto";
 import { ResourceAlreadyExistsError } from "../exceptions/RessourceAlreadyExistsError";
 import { TaskServiceInterface } from "../services/task/taskServiceInterface";
 import { BaseController } from "./baseController";
@@ -43,7 +43,7 @@ export class TaskController extends BaseController {
 
   public findTaskById = async (req: Request, res: Response) => {
     try {
-      const { id } = await handleDtoValidation(req.params, TaskIdDto);
+      const { id } = await handleDtoValidation(req.params, TaskIdDTO);
 
       const task = await this.taskService.findTaskById(id);
 
@@ -55,8 +55,8 @@ export class TaskController extends BaseController {
 
   public updateTask = async (req: Request, res: Response) => {
     try {
-      const { id } = await handleDtoValidation(req.params, TaskIdDto);
-      const updateData = await handleDtoValidation(req.body, UpdateTaskDto);
+      const { id } = await handleDtoValidation(req.params, TaskIdDTO);
+      const updateData = await handleDtoValidation(req.body, UpdateTaskDTO);
 
       const updatedTask = await this.taskService.updateTask(id, updateData);
       res.status(StatusCodes.OK).json(updatedTask);
@@ -67,7 +67,7 @@ export class TaskController extends BaseController {
 
   public deleteTask = async (req: Request, res: Response) => {
     try {
-      const { id } = await handleDtoValidation(req.params, TaskIdDto);
+      const { id } = await handleDtoValidation(req.params, TaskIdDTO);
 
       const result = await this.taskService.deleteTask(id);
       res.status(StatusCodes.OK).json(result);

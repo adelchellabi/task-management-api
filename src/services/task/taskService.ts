@@ -1,4 +1,4 @@
-import { CreateTaskDTO, UpdateTaskDto } from "../../dtos/taskDto";
+import { CreateTaskDTO, UpdateTaskDTO } from "../../dtos/taskDto";
 import { ResourceNotFoundError } from "../../exceptions/RessourceNotFoundError";
 import Task, { TaskDocumentInterface } from "../../models/task";
 import { TaskServiceInterface } from "./taskServiceInterface";
@@ -42,7 +42,7 @@ export class TaskService implements TaskServiceInterface {
 
   public async updateTask(
     id: string,
-    updateData: UpdateTaskDto
+    updateData: UpdateTaskDTO
   ): Promise<TaskDocumentInterface | null> {
     try {
       await this.findTaskById(id);
