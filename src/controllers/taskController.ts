@@ -3,7 +3,7 @@ import { StatusCodes } from "http-status-codes";
 import { handleDtoValidation } from "../dtos/helper";
 import { CreateTaskDTO, TaskIdDTO, UpdateTaskDTO } from "../dtos/taskDto";
 import { ResourceAlreadyExistsError } from "../exceptions/RessourceAlreadyExistsError";
-import { TaskServiceInterface } from "../services/task/taskServiceInterface";
+import { TaskServiceInterface } from "../services/interfaces/taskServiceInterface";
 import { BaseController } from "./baseController";
 
 export class TaskController extends BaseController {

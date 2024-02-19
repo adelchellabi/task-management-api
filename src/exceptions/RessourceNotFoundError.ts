@@ -1,11 +1,9 @@
 import { StatusCodes } from "http-status-codes";
+import { BaseError } from "./BaseError";
 
-export class ResourceNotFoundError extends Error {
-  statusCode: number;
-
+export class ResourceNotFoundError extends BaseError {
   constructor(message: string = "Resource not found") {
-    super(message);
+    super(message, StatusCodes.NOT_FOUND);
     this.name = "ResourceNotFoundError";
-    this.statusCode = StatusCodes.NOT_FOUND;
   }
 }

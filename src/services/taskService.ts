@@ -1,7 +1,7 @@
-import { CreateTaskDTO, UpdateTaskDTO } from "../../dtos/taskDto";
-import { ResourceNotFoundError } from "../../exceptions/RessourceNotFoundError";
-import Task, { TaskDocumentInterface } from "../../models/task";
-import { TaskServiceInterface } from "./taskServiceInterface";
+import { CreateTaskDTO, UpdateTaskDTO } from "../dtos/taskDto";
+import { ResourceNotFoundError } from "../exceptions/RessourceNotFoundError";
+import Task, { TaskDocumentInterface } from "../models/task";
+import { TaskServiceInterface } from "./interfaces/taskServiceInterface";
 
 export class TaskService implements TaskServiceInterface {
   async createTask(taskData: CreateTaskDTO): Promise<TaskDocumentInterface> {

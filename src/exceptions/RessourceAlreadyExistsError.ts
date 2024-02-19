@@ -1,11 +1,9 @@
 import { StatusCodes } from "http-status-codes";
+import { BaseError } from "./BaseError";
 
-export class ResourceAlreadyExistsError extends Error {
-  statusCode: number;
-
+export class ResourceAlreadyExistsError extends BaseError {
   constructor(message: string = "Resource already exists") {
-    super(message);
+    super(message, StatusCodes.CONFLICT);
     this.name = "ResourceAlreadyExistsError";
-    this.statusCode = StatusCodes.CONFLICT;
   }
 }
