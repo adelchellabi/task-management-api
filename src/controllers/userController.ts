@@ -25,10 +25,10 @@ export class UserController extends BaseController {
   constructor(private userService: UserServiceInterface) {
     super();
   }
- 
+
   public register = async (req: Request, res: Response) => {
     try {
-     const userData = await handleDtoValidation(req.body, RegisterDTO);
+      const userData = await handleDtoValidation(req.body, RegisterDTO);
       await this.checkUserExists(userData.email);
       const user = await this.userService.createUser(userData);
       res.status(StatusCodes.CREATED).json(user);
@@ -155,7 +155,10 @@ export class UserController extends BaseController {
 
       const updateData = await handleDtoValidation(req.body, UpdateUserDTO);
 
-      const updatedUser = await this.userService.updateUser(id, updateData);
+      const updatedUser = await this.userService.updateUser(
+        userIdFromParams,
+        updateData
+      );
 
       res.status(StatusCodes.OK).json(updatedUser);
     } catch (error: any) {
@@ -182,7 +185,7 @@ export class UserController extends BaseController {
         throw new AccessDeniedError();
       }
 
-      const result = await this.userService.deleteUser(id);
+      const result = await this.userService.deleteUser(userIdFromParams);
 
       res.status(StatusCodes.OK).json(result);
     } catch (error: any) {
