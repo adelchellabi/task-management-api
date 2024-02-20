@@ -2,7 +2,11 @@ import express from "express";
 import { UserController } from "../controllers/userController";
 import { UserServiceInterface } from "../services/interfaces/userServiceInterface";
 import { UserService } from "../services/userService";
-import { authorizeRoles, isAuthenticated } from "../middleware/authMiddleware";
+import {
+  authorizeRoles,
+  isAuthenticated,
+  checkOwnershipAuthorization,
+} from "../middleware/authMiddleware";
 import { UserRole } from "../models/user";
 
 const router = express.Router();
@@ -23,10 +27,25 @@ router.get(
 
 router.get("/profile", isAuthenticated, userController.getUserProfile);
 
-router.get("/:id", isAuthenticated, userController.findUserById);
+router.get(
+  "/:id",
+  isAuthenticated,
+  checkOwnershipAuthorization(userService),
+  userController.findUserById
+);
 
-router.patch("/:id", isAuthenticated, userController.updateUser);
+router.patch(
+  "/:id",
+  isAuthenticated,
+  checkOwnershipAuthorization(userService),
+  userController.updateUser
+);
 
-router.delete("/:id", isAuthenticated, userController.deleteUser);
+router.delete(
+  "/:id",
+  isAuthenticated,
+  checkOwnershipAuthorization(userService),
+  userController.deleteUser
+);
 
 export default router;

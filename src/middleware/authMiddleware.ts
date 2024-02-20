@@ -4,6 +4,8 @@ import { UserRole } from "../models/user";
 import { UnauthorizedError } from "../exceptions/UnauthorizedError";
 import { AccessDeniedError } from "../exceptions/AccessDeniedError";
 import { StatusCodes } from "http-status-codes";
+import { ResourceServiceInterface } from "../services/interfaces/resourceServiceInterface";
+import { ResourceNotFoundError } from "../exceptions/RessourceNotFoundError";
 
 export interface TokenUserData {
   id: string;
@@ -67,3 +69,46 @@ export function authorizeRoles(roles: UserRole[]) {
     }
   };
 }
+
+export const checkOwnershipAuthorization = <T>(
+  resourceService: ResourceServiceInterface<T>
+) => {
+  return async (
+    req: AuthenticatedRequest,
+    res: Response,
+    next: NextFunction
+  ) => {
+    try {
+      if (!req.user) {
+        throw new UnauthorizedError("Unauthorized. Please provide a token");
+      }
+      const { id: authenticatedUserId, role: userRole } =
+        req.user as TokenUserData;
+
+      const resource = await resourceService.findById(req.params.id);
+
+      const resourceOwnerId = resourceService.getOwnerId(resource);
+
+      if (
+        authenticatedUserId !== resourceOwnerId &&
+        userRole !== UserRole.ADMIN
+      ) {
+        throw new AccessDeniedError();
+      }
+
+      next();
+    } catch (error) {
+      if (
+        error instanceof AccessDeniedError ||
+        error instanceof UnauthorizedError ||
+        error instanceof ResourceNotFoundError
+      ) {
+        res.status(error.statusCode).json({ error: error.message });
+      } else {
+        res
+          .status(StatusCodes.INTERNAL_SERVER_ERROR)
+          .json({ error: "Internal server error" });
+      }
+    }
+  };
+};

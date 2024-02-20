@@ -1,4 +1,4 @@
-import { NextFunction, Request, Response } from "express";
+import { NextFunction, Response } from "express";
 import jwt from "jsonwebtoken";
 
 import { StatusCodes } from "http-status-codes";
@@ -7,6 +7,7 @@ import {
   TokenUserData,
   authorizeRoles,
   isAuthenticated,
+  checkOwnershipAuthorization,
 } from "../../src/middleware/authMiddleware";
 import { UserRole } from "../../src/models/user";
 
@@ -116,5 +117,92 @@ describe("authorizeRoles middleware", () => {
       error:
         "Access denied. You do not have permission to access this resource.",
     });
+  });
+});
+
+describe("checkOwnershipAuthorization middleware", () => {
+  let req: Partial<AuthenticatedRequest>;
+  let res: Partial<Response>;
+  let next: NextFunction;
+
+  beforeEach(() => {
+    req = {
+      user: mockUserTokenData,
+      params: {
+        id: "resource_id",
+      },
+    };
+    res = {
+      status: jest.fn().mockReturnThis(),
+      json: jest.fn(),
+    } as Partial<Response>;
+    next = jest.fn();
+  });
+
+  it("should call next if user owns the resource", async () => {
+    const mockResourceService = {
+      findById: jest.fn().mockResolvedValue({ ownerId: "user_id" }),
+      getOwnerId: jest.fn().mockReturnValue("user_id"),
+    };
+
+    await checkOwnershipAuthorization(mockResourceService)(
+      req as AuthenticatedRequest,
+      res as Response,
+      next
+    );
+    expect(next).toHaveBeenCalled();
+  });
+
+  it("should call next if user is admin", async () => {
+    const mockResourceService = {
+      findById: jest.fn().mockResolvedValue({ ownerId: "other_user_id" }),
+      getOwnerId: jest.fn().mockReturnValue("other_user_id"),
+    };
+
+    req.params!.id = "another_resource_id";
+    req.user!.role = UserRole.ADMIN;
+
+    await checkOwnershipAuthorization(mockResourceService)(
+      req as AuthenticatedRequest,
+      res as Response,
+      next
+    );
+    expect(next).toHaveBeenCalled();
+  });
+
+  it("should throw AccessDeniedError if user does not own the resource and is not an admin", async () => {
+    const mockResourceService = {
+      findById: jest.fn().mockResolvedValue({ ownerId: "other_user_id" }),
+      getOwnerId: jest.fn().mockReturnValue("other_user_id"),
+    };
+
+    req.user!.role = UserRole.USER;
+
+    await checkOwnershipAuthorization(mockResourceService)(
+      req as AuthenticatedRequest,
+      res as Response,
+      next
+    );
+
+    expect(res.status).toHaveBeenCalledWith(StatusCodes.FORBIDDEN);
+    expect(res.json).toHaveBeenCalledWith({
+      error:
+        "Access denied. You do not have permission to access this resource.",
+    });
+  });
+
+  it("should handle errors appropriately", async () => {
+    const mockResourceService = {
+      findById: jest.fn().mockRejectedValue(new Error("Some error")),
+      getOwnerId: jest.fn(),
+    };
+
+    await checkOwnershipAuthorization(mockResourceService)(
+      req as AuthenticatedRequest,
+      res as Response,
+      next
+    );
+    expect(res.status).toHaveBeenCalledWith(StatusCodes.INTERNAL_SERVER_ERROR);
+    expect(res.json).toHaveBeenCalledWith({ error: "Internal server error" });
   });
 });

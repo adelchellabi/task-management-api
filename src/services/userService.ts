@@ -84,4 +84,12 @@ export class UserService implements UserServiceInterface {
       throw error;
     }
   }
+
+  getOwnerId(resource: UserDocumentInterface): string {
+    return resource.id;
+  }
+
+  async findById(resourceId: string): Promise<UserDocumentInterface> {
+    return await this.findUserById(resourceId);
+  }
 }
