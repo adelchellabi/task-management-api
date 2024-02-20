@@ -4,8 +4,17 @@ import { RegisterDTO, UpdateUserDTO } from "../dtos/userDto";
 import User, { UserDocumentInterface } from "../models/user";
 import { ResourceNotFoundError } from "../exceptions/RessourceNotFoundError";
 import { hashPassword } from "../utils/utils";
+import { TaskService } from "./taskService";
+import { TaskServiceInterface } from "./interfaces/taskServiceInterface";
+import { TaskDocumentInterface } from "../models/task";
 
 export class UserService implements UserServiceInterface {
+  taskService: TaskServiceInterface;
+
+  constructor() {
+    this.taskService = new TaskService();
+  }
+
   public async createUser(
     userData: RegisterDTO
   ): Promise<UserDocumentInterface> {
@@ -91,5 +100,13 @@ export class UserService implements UserServiceInterface {
 
   async findById(resourceId: string): Promise<UserDocumentInterface> {
     return await this.findUserById(resourceId);
+  }
+
+  public async getTasksByUserId(id: string): Promise<TaskDocumentInterface[]> {
+    try {
+      return await this.taskService.findTasksByOwnerId(id);
+    } catch (error) {
+      throw error;
+    }
   }
 }

@@ -10,6 +10,7 @@ export interface TaskInterface {
   priority: TaskPriority;
   createdAt?: Date;
   updatedAt?: Date;
+  owner?: string;
 }
 
 export interface TaskDocumentInterface extends TaskInterface, Document {}
@@ -23,6 +24,11 @@ const taskSchema = new Schema<TaskDocumentInterface>(
       type: String,
       enum: taskPriorityValues,
       default: taskPriorityValues[1],
+    },
+    owner: {
+      type: Schema.Types.ObjectId,
+      required: true,
+      ref: "User",
     },
   },
   { timestamps: true }

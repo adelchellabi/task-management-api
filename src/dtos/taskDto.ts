@@ -33,6 +33,10 @@ export class CreateTaskDTO {
   })
   @IsOptional()
   priority?: TaskPriority;
+
+  @IsOptional()
+  @IsMongoId()
+  owner?: string;
 }
 
 export class UpdateTaskDTO {

@@ -12,7 +12,6 @@ import { BaseController } from "./baseController";
 import { ResourceAlreadyExistsError } from "../exceptions/RessourceAlreadyExistsError";
 import { UnauthorizedError } from "../exceptions/UnauthorizedError";
 import { generateToken } from "../utils/utils";
-
 import { AuthenticatedRequest } from "../middleware/authMiddleware";
 import { ResourceNotFoundError } from "../exceptions/RessourceNotFoundError";
 
@@ -153,6 +152,31 @@ export class UserController extends BaseController {
       const result = await this.userService.deleteUser(userIdFromParams);
 
       res.status(StatusCodes.OK).json(result);
+    } catch (error: any) {
+      this.handleRequestError(error, res);
+    }
+  };
+
+  public getTasksByUserId = async (req: Request, res: Response) => {
+    try {
+      const { id } = await handleDtoValidation(req.params, UserIdDTO);
+      const tasks = await this.userService.getTasksByUserId(id);
+
+      res.status(StatusCodes.OK).json(tasks);
+    } catch (error: any) {
+      this.handleRequestError(error, res);
+    }
+  };
+
+  public getTasksForCurrentUser = async (
+    req: AuthenticatedRequest,
+    res: Response
+  ) => {
+    try {
+      const id = req.user!.id;
+      const tasks = await this.userService.getTasksByUserId(id);
+
+      res.status(StatusCodes.OK).json(tasks);
     } catch (error: any) {
       this.handleRequestError(error, res);
     }

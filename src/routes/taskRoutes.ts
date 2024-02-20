@@ -3,7 +3,11 @@ import { Router } from "express";
 import { TaskServiceInterface } from "../services/interfaces/taskServiceInterface";
 import { TaskService } from "../services/taskService";
 import { TaskController } from "../controllers/taskController";
-import { authorizeRoles, isAuthenticated } from "../middleware/authMiddleware";
+import {
+  authorizeRoles,
+  checkOwnershipAuthorization,
+  isAuthenticated,
+} from "../middleware/authMiddleware";
 import { UserRole } from "../models/user";
 
 const router = Router();
@@ -20,10 +24,25 @@ router.get(
   taskController.findAllTasks
 );
 
-router.get("/:id", isAuthenticated, taskController.findTaskById);
+router.get(
+  "/:id",
+  isAuthenticated,
+  checkOwnershipAuthorization(taskService),
+  taskController.findTaskById
+);
 
-router.patch("/:id", isAuthenticated, taskController.updateTask);
+router.patch(
+  "/:id",
+  isAuthenticated,
+  checkOwnershipAuthorization(taskService),
+  taskController.updateTask
+);
 
-router.delete("/:id", isAuthenticated, taskController.deleteTask);
+router.delete(
+  "/:id",
+  isAuthenticated,
+  checkOwnershipAuthorization(taskService),
+  taskController.deleteTask
+);
 
 export default router;

@@ -1,4 +1,5 @@
 import { RegisterDTO, UpdateUserDTO } from "../../dtos/userDto";
+import { TaskDocumentInterface } from "../../models/task";
 import { UserDocumentInterface } from "../../models/user";
 import { ResourceServiceInterface } from "./resourceServiceInterface";
 
@@ -23,4 +24,6 @@ export interface UserServiceInterface
   ): Promise<UserDocumentInterface | null>;
 
   deleteUser(id: string): Promise<boolean>;
+
+  getTasksByUserId(id: string): Promise<TaskDocumentInterface[]>;
 }

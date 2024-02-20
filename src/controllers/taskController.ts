@@ -5,18 +5,25 @@ import { CreateTaskDTO, TaskIdDTO, UpdateTaskDTO } from "../dtos/taskDto";
 import { ResourceAlreadyExistsError } from "../exceptions/RessourceAlreadyExistsError";
 import { TaskServiceInterface } from "../services/interfaces/taskServiceInterface";
 import { BaseController } from "./baseController";
+import { AuthenticatedRequest } from "../middleware/authMiddleware";
 
 export class TaskController extends BaseController {
   constructor(private taskService: TaskServiceInterface) {
     super();
   }
 
-  public createTask = async (req: Request, res: Response) => {
+  public createTask = async (req: AuthenticatedRequest, res: Response) => {
     try {
+      const owner: string = req.user!.id;
+
       const taskData = await handleDtoValidation(req.body, CreateTaskDTO);
       await this.checkTaskExists(taskData.title);
 
-      const task = await this.taskService.createTask(taskData);
+      const task = await this.taskService.createTask({
+        owner,
+        ...taskData,
+      });
+
       res.status(StatusCodes.CREATED).json(task);
     } catch (error: any) {
       this.handleRequestError(error, res);
