@@ -31,7 +31,7 @@ export function isAuthenticated(
       (err: any, user: any) => {
         if (err) {
           throw new UnauthorizedError(
-            "Unauthorized. The provided token has expired."
+            "Unauthorized. The provided token is invalid or has expired."
           );
         }
         req.user = user;
