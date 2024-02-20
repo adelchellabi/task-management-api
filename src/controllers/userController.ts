@@ -10,16 +10,11 @@ import { UserServiceInterface } from "../services/interfaces/userServiceInterfac
 import { handleDtoValidation } from "../dtos/helper";
 import { BaseController } from "./baseController";
 import { ResourceAlreadyExistsError } from "../exceptions/RessourceAlreadyExistsError";
-import { ResourceNotFoundError } from "../exceptions/RessourceNotFoundError";
 import { UnauthorizedError } from "../exceptions/UnauthorizedError";
 import { generateToken } from "../utils/utils";
 
-import { UserRole } from "../models/user";
-import { AccessDeniedError } from "../exceptions/AccessDeniedError";
-import {
-  AuthenticatedRequest,
-  TokenUserData,
-} from "../middleware/authMiddleware";
+import { AuthenticatedRequest } from "../middleware/authMiddleware";
+import { ResourceNotFoundError } from "../exceptions/RessourceNotFoundError";
 
 export class UserController extends BaseController {
   constructor(private userService: UserServiceInterface) {
@@ -52,7 +47,9 @@ export class UserController extends BaseController {
       const user = await this.userService.findUserByEmail(loginData.email);
 
       if (!user) {
-        throw new ResourceNotFoundError("User not found");
+        throw new ResourceNotFoundError(
+          `User with email '${loginData.email}' not found`
+        );
       }
 
       await this.checkPasswordMatch(loginData.password, user.password);
@@ -94,21 +91,8 @@ export class UserController extends BaseController {
         UserIdDTO
       );
 
-      if (!req.user) {
-        throw new UnauthorizedError("Unauthorized. Please provide a token");
-      }
-
-      const { id, role } = req.user as TokenUserData;
-
-      if (userIdFromParams !== id && role !== UserRole.ADMIN) {
-        throw new AccessDeniedError();
-      }
-
       const user = await this.userService.findUserById(userIdFromParams);
 
-      if (!user) {
-        throw new ResourceNotFoundError("User not found");
-      }
       res.status(StatusCodes.OK).json(user);
     } catch (error: any) {
       this.handleRequestError(error, res);
@@ -143,15 +127,6 @@ export class UserController extends BaseController {
         req.params,
         UserIdDTO
       );
-      if (!req.user) {
-        throw new UnauthorizedError("Unauthorized. Please provide a token");
-      }
-
-      const { id, role } = req.user as TokenUserData;
-
-      if (userIdFromParams !== id && role !== UserRole.ADMIN) {
-        throw new AccessDeniedError();
-      }
 
       const updateData = await handleDtoValidation(req.body, UpdateUserDTO);
 
@@ -175,16 +150,6 @@ export class UserController extends BaseController {
         req.params,
         UserIdDTO
       );
-      if (!req.user) {
-        throw new UnauthorizedError("Unauthorized. Please provide a token");
-      }
-
-      const { id, role } = req.user as TokenUserData;
-
-      if (userIdFromParams !== id && role !== UserRole.ADMIN) {
-        throw new AccessDeniedError();
-      }
-
       const result = await this.userService.deleteUser(userIdFromParams);
 
       res.status(StatusCodes.OK).json(result);
