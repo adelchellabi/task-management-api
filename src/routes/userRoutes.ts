@@ -48,4 +48,15 @@ router.delete(
   userController.deleteUser
 );
 
+router.get(
+  "/profile/tasks",
+  isAuthenticated,
+  userController.getTasksForCurrentUser
+);
+router.get(
+  "/:id/tasks",
+  isAuthenticated,
+  authorizeRoles([UserRole.ADMIN]),
+  userController.getTasksByUserId
+);
 export default router;

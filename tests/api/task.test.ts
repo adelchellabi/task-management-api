@@ -57,7 +57,7 @@ describe("Task endpoints", () => {
     it("should return 409 if task title already exists", async () => {
       const taskData = generateFakeTask();
 
-      await taskService.createTask(taskData);
+      await taskService.createTask({ ...taskData, owner: user.id });
 
       await request(app)
         .post(BASE_URL)
@@ -76,19 +76,6 @@ describe("Task endpoints", () => {
       );
     });
 
-    it("should return a task by ID", async () => {
-      const taskData = generateFakeTask();
-      const createdTask = await taskService.createTask(taskData);
-
-      const response = await request(app)
-        .get(`${BASE_URL}/${createdTask._id}`)
-        .auth(userAuthToken, { type: "bearer" })
-        .expect(StatusCodes.OK);
-
-      expect(response.body.title).toBe(taskData.title);
-      expect(response.body._id).toBe(createdTask._id.toString());
-    });
-
     it("should return task not found", async () => {
       const notFoundId = "65d09100dd6294bf821d3aa6";
       const response = await request(app)
@@ -103,8 +90,10 @@ describe("Task endpoints", () => {
 
     it("should update a task", async () => {
       const taskData = generateFakeTask();
-      const createdTask = await taskService.createTask(taskData);
-
+      const createdTask = await taskService.createTask({
+        ...taskData,
+        owner: user.id,
+      });
       const updatedTaskData = {
         title: "Updated Title",
         description: "Updated Description",
@@ -114,7 +103,6 @@ describe("Task endpoints", () => {
         .patch(`${BASE_URL}/${createdTask._id}`)
         .auth(userAuthToken, { type: "bearer" })
         .send(updatedTaskData)
-        .auth(userAuthToken, { type: "bearer" })
         .expect(StatusCodes.OK);
 
       expect(response.body.title).toBe(updatedTaskData.title);
@@ -123,8 +111,10 @@ describe("Task endpoints", () => {
 
     it("should delete a task", async () => {
       const taskData = generateFakeTask();
-      const createdTask = await taskService.createTask(taskData);
-
+      const createdTask = await taskService.createTask({
+        ...taskData,
+        owner: user.id,
+      });
       await request(app)
         .delete(`${BASE_URL}/${createdTask._id}`)
         .auth(userAuthToken, { type: "bearer" })
@@ -146,7 +136,10 @@ describe("Task endpoints", () => {
 
     it("should return all tasks", async () => {
       const taskData = generateFakeTask();
-      await taskService.createTask(taskData);
+      await taskService.createTask({
+        ...taskData,
+        owner: admin.id,
+      });
 
       const response = await request(app)
         .get(BASE_URL)
@@ -155,6 +148,23 @@ describe("Task endpoints", () => {
 
       expect(response.body.length).toBe(1);
       expect(response.body[0].title).toBe(taskData.title);
+    });
+
+    it("should return a task by ID", async () => {
+      const taskData = generateFakeTask();
+
+      const createdTask = await taskService.createTask({
+        ...taskData,
+        owner: admin.id,
+      });
+
+      const response = await request(app)
+        .get(`${BASE_URL}/${createdTask._id}`)
+        .auth(adminAuthToken, { type: "bearer" })
+        .expect(StatusCodes.OK);
+
+      expect(response.body.title).toBe(taskData.title);
+      expect(response.body._id).toBe(createdTask._id.toString());
     });
   });
 });

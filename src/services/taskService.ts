@@ -22,19 +22,34 @@ export class TaskService implements TaskServiceInterface {
 
   async findAllTasks(): Promise<TaskDocumentInterface[]> {
     try {
-      return await Task.find({});
+      return await Task.find({}).populate("owner", "firstName lastName");
     } catch (error) {
       throw error;
     }
   }
 
-  async findTaskById(id: string): Promise<TaskDocumentInterface | null> {
+  async findTaskById(id: string): Promise<TaskDocumentInterface> {
     try {
-      const task = await Task.findById(id);
+      const task = await Task.findById(id).populate(
+        "owner",
+        "firstName lastName"
+      );
+
       if (!task) {
         throw new ResourceNotFoundError(`Task with ID '${id}' not found`);
       }
       return task;
+    } catch (error: any) {
+      throw error;
+    }
+  }
+
+  async findTasksByOwnerId(id: string): Promise<TaskDocumentInterface[]> {
+    try {
+      return await Task.find({ owner: id }).populate(
+        "owner",
+        "firstName lastName"
+      );
     } catch (error: any) {
       throw error;
     }
@@ -63,5 +78,14 @@ export class TaskService implements TaskServiceInterface {
     } catch (error) {
       throw error;
     }
+  }
+
+  getOwnerId(resource: TaskDocumentInterface): string {
+    const owner: any = resource.owner;
+    return owner!._id.toString();
+  }
+
+  async findById(resourceId: string): Promise<TaskDocumentInterface> {
+    return await this.findTaskById(resourceId);
   }
 }
