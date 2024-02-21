@@ -110,7 +110,7 @@
           }
         },
         "operationId": "Get all tasks",
-        "description": "Get all tasks. Only admins can access this endpoint."
+        "description": "Get all tasks. Only super_user and admin can access this endpoint."
       },
       "post": {
         "summary": "Create a new Task",
@@ -2010,13 +2010,23 @@
           }
         },
         "operationId": "GetTasksByUserId",
-        "description": "Get all tasks by user id . Only Admin can access this endpoint.",
+        "description": "Get all tasks by user id . Only authenticated user (super_user and admin) can access this endpoint.",
         "security": [
           {
             "BearerAuth": []
           }
         ]
       }
+    },
+    "/api-docs": {
+      "get": {
+        "summary": "API documentation",
+        "tags": ["Documentation"],
+        "responses": {},
+        "operationId": "get-api-doc",
+        "description": "API documentation. show all endpoints."
+      },
+      "parameters": []
     }
   },
   "definitions": {

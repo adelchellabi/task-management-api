@@ -20,7 +20,7 @@ router.post("/", isAuthenticated, taskController.createTask);
 router.get(
   "/",
   isAuthenticated,
-  authorizeRoles([UserRole.ADMIN]),
+  authorizeRoles([UserRole.ADMIN, UserRole.SUPER_USER]),
   taskController.findAllTasks
 );
 
