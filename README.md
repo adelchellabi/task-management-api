@@ -69,10 +69,25 @@ To run the Task Management API locally, you'll need Docker and Docker Compose in
     cd task-management-api
    ```
 
-3. Build and start the Docker containers:
+3. Copy the env.example file to create a .env file:
+
+   ```bash
+   cp env.example .env
+   ```
+
+   This command creates a new .env file based on the provided example file. Make sure to fill in the necessary environment variables in the .env file with your own values.
+
+4. Build and start the Docker containers:
 
    ```bash
     docker-compose up --build
+   ```
+
+5. Install dependecies:
+
+   ```bash
+    docker-compose exec app sh
+    npm i
    ```
 
    The API will be accessible at http://localhost:3000.
@@ -83,7 +98,7 @@ Once the server is running, you can interact with the API using HTTP requests. S
 
 ## API Documentation
 
-The API documentation is available at `GET /api-docs`, where you can interact with the API endpoints and view detailed information about each endpoint.
+The API documentation is available at `GET /api/v1/api-docs`, where you can interact with the API endpoints and view detailed information about each endpoint.
 
 ### Routes
 
@@ -125,23 +140,17 @@ Before using the Task Management API, you can use the CLI command to generate an
 
    Once Docker Compose is running, access the shell of the container where your application is running using the following command:
 
-```bash
-    docker-compose exec app bash
-```
+   ```bash
+      docker-compose exec app sh
+   ```
 
-**Or**
+   Inside the container's shell, run the following CLI command to generate the admin user:
 
-```bash
-    docker-compose exec app sh
-```
+   ```bash
+   npm run generate-admin admin@example.com adminPassword
+   ```
 
-Inside the container's shell, run the following CLI command to generate the admin user:
-
-```bash
-npm run generate-admin admin@example.com adminPassword
-```
-
-Replace "admin@example.com" with the desired email address for the admin user and "adminPassword" with the desired password.
+   Replace "admin@example.com" with the desired email address for the admin user and "adminPassword" with the desired password.
 
 ## Managing Docker Containers
 
@@ -178,7 +187,7 @@ This command will stop and remove all the containers, networks, and volumes defi
 If you need to access the shell of a specific container, you can use the following command:
 
 ```bash
-docker-compose exec <service-name> bash
+docker-compose exec <service-name> sh
 ```
 
 Replace "service-name" with the name of the service defined in your **docker-compose.yml** file. This command will open a bash shell inside the specified container.
@@ -196,7 +205,7 @@ To run tests for this project, you can access the container and execute the test
    Once Docker Compose is running, access the shell of the container where your application is running using the following command:
 
 ```bash
-    docker-compose exec app bash
+    docker-compose exec app sh
 ```
 
 **Run All Tests**:
