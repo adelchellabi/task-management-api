@@ -1,0 +1,2097 @@
+{
+  "swagger": "2.0",
+  "info": {
+    "title": "Task Management API",
+    "description": "API documentation for the Task Management application",
+    "version": "1.0.0"
+  },
+  "basePath": "/api/v1",
+  "paths": {
+    "/tasks": {
+      "get": {
+        "summary": "Get all tasks",
+        "tags": ["Task"],
+        "security": [
+          {
+            "BearerAuth": []
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful response",
+            "schema": {
+              "type": "array",
+              "items": {
+                "$ref": "#/definitions/Task"
+              }
+            },
+            "examples": {
+              "application/json": [
+                {
+                  "_id": "65d4c5b8149337df96fd46f4",
+                  "title": "Create a rest api",
+                  "description": "Create a rest api using express, typescript and mongodb",
+                  "completed": false,
+                  "priority": "medium",
+                  "owner": {
+                    "_id": "65d4c5a6149337df96fd46ed",
+                    "firstName": "Jon",
+                    "lastName": "Do"
+                  },
+                  "createdAt": "2024-02-20T15:31:04.983Z",
+                  "updatedAt": "2024-02-20T15:42:31.830Z",
+                  "__v": 0
+                }
+              ]
+            }
+          },
+          "401": {
+            "description": "Unauthorized access",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "error": {
+                  "type": "string"
+                }
+              },
+              "x-examples": {
+                "Example 1": {
+                  "error": "Unauthorized. The provided token is invalid or has expired."
+                }
+              }
+            },
+            "examples": [
+              {
+                "error": "Unauthorized. The provided token is invalid or has expired."
+              }
+            ]
+          },
+          "403": {
+            "description": "Access Denied",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "error": {
+                  "type": "string"
+                }
+              },
+              "x-examples": {
+                "Example 1": {
+                  "error": "Access denied. You do not have permission to access this resource."
+                }
+              }
+            },
+            "examples": [
+              {
+                "error": "Access denied. You do not have permission to access this resource."
+              }
+            ]
+          },
+          "500": {
+            "description": "Internal Server Error",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "error": {
+                  "type": "string"
+                }
+              },
+              "x-examples": {
+                "Example 1": {
+                  "error": "Internal Server Error"
+                }
+              }
+            },
+            "examples": [
+              {
+                "error": "Internal server error"
+              }
+            ]
+          }
+        },
+        "operationId": "Get all tasks",
+        "description": "Get all tasks. Only admins can access this endpoint."
+      },
+      "post": {
+        "summary": "Create a new Task",
+        "tags": ["Task"],
+        "operationId": "CreateTask",
+        "responses": {
+          "201": {
+            "description": "Created",
+            "schema": {
+              "type": "object",
+              "x-examples": {
+                "Example 1": {
+                  "title": "Create a new portfolio",
+                  "description": "Create a new portfolio using reactjs expressjs",
+                  "completed": false,
+                  "priority": "medium",
+                  "owner": "65d4c5a6149337df96fd46ed",
+                  "_id": "65d527d5009ed7e3b5c877ad",
+                  "createdAt": "2024-02-20T22:29:41.207Z",
+                  "updatedAt": "2024-02-20T22:29:41.207Z",
+                  "__v": 0
+                }
+              },
+              "properties": {
+                "title": {
+                  "type": "string"
+                },
+                "description": {
+                  "type": "string"
+                },
+                "completed": {
+                  "type": "boolean"
+                },
+                "priority": {
+                  "type": "string"
+                },
+                "owner": {
+                  "type": "string"
+                },
+                "_id": {
+                  "type": "string"
+                },
+                "createdAt": {
+                  "type": "string"
+                },
+                "updatedAt": {
+                  "type": "string"
+                },
+                "__v": {
+                  "type": "integer"
+                }
+              }
+            },
+            "examples": [
+              {
+                "title": "Create a new website",
+                "description": "Create a new portfolio using reactjs expressjs",
+                "completed": false,
+                "priority": "medium",
+                "owner": "65d4c5a6149337df96fd46ed",
+                "_id": "65d527d5009ed7e3b5c877ad",
+                "createdAt": "2024-02-20T22:29:41.207Z",
+                "updatedAt": "2024-02-20T22:29:41.207Z",
+                "__v": 0
+              }
+            ]
+          },
+          "401": {
+            "description": "Unauthorized access",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "error": {
+                  "type": "string"
+                }
+              },
+              "x-examples": {
+                "Example 1": {
+                  "error": "Unauthorized. The provided token is invalid or has expired."
+                }
+              }
+            },
+            "examples": [
+              {
+                "error": "Unauthorized. The provided token is invalid or has expired."
+              }
+            ]
+          },
+          "409": {
+            "description": "Conflict",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "error": {
+                  "type": "string"
+                }
+              },
+              "x-examples": {
+                "Example 1": {
+                  "error": "Task with title 'Create a new website' already exists"
+                }
+              }
+            },
+            "examples": [
+              {
+                "error": "Task with title 'Create a new website' already exists"
+              }
+            ]
+          },
+          "500": {
+            "description": "Internal Server Error",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "error": {
+                  "type": "string"
+                }
+              },
+              "x-examples": {
+                "Example 1": {
+                  "error": "Internal Server Error"
+                }
+              }
+            },
+            "examples": [
+              {
+                "error": "Internal server error"
+              }
+            ]
+          }
+        },
+        "description": "Create new task. Only authenticated users can access this endpoint.",
+        "security": [
+          {
+            "BearerAuth": []
+          }
+        ],
+        "parameters": [
+          {
+            "in": "body",
+            "name": "body",
+            "schema": {
+              "type": "object",
+              "x-examples": {
+                "Example 1": {
+                  "title": "Create a new portfolio",
+                  "description": "Create a new portfolio using reactjs expressjs",
+                  "completed": false,
+                  "priority": "medium"
+                }
+              },
+              "properties": {
+                "title": {
+                  "type": "string"
+                },
+                "description": {
+                  "type": "string"
+                },
+                "completed": {
+                  "type": "boolean"
+                },
+                "priority": {
+                  "type": "string",
+                  "description": "acceptable values are [\"low\", \"medium\", \"high\"] "
+                }
+              },
+              "required": ["title", "description"]
+            },
+            "x-examples": [
+              {
+                "title": "string",
+                "description": "string",
+                "completed": true,
+                "priority": "string"
+              }
+            ]
+          }
+        ]
+      }
+    },
+    "/tasks/id": {
+      "get": {
+        "summary": "Get task by id",
+        "tags": ["Task"],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "_id": {
+                  "type": "string"
+                },
+                "title": {
+                  "type": "string"
+                },
+                "description": {
+                  "type": "string"
+                },
+                "completed": {
+                  "type": "boolean"
+                },
+                "priority": {
+                  "type": "string"
+                },
+                "owner": {
+                  "type": "object",
+                  "properties": {
+                    "_id": {
+                      "type": "string"
+                    },
+                    "firstName": {
+                      "type": "string"
+                    },
+                    "lastName": {
+                      "type": "string"
+                    }
+                  }
+                },
+                "createdAt": {
+                  "type": "string"
+                },
+                "updatedAt": {
+                  "type": "string"
+                },
+                "__v": {
+                  "type": "integer"
+                }
+              },
+              "x-examples": {
+                "Example 1": {
+                  "_id": "65d4c5b8149337df96fd46f4",
+                  "title": "First Task",
+                  "description": "description of the task",
+                  "completed": false,
+                  "priority": "medium",
+                  "owner": {
+                    "_id": "65d4c5a6149337df96fd46ed",
+                    "firstName": "Jon",
+                    "lastName": "Do"
+                  },
+                  "createdAt": "2024-02-20T15:31:04.983Z",
+                  "updatedAt": "2024-02-20T15:42:31.830Z",
+                  "__v": 0
+                }
+              }
+            },
+            "examples": [
+              {
+                "_id": "65d4c5b8149337df96fd46f4",
+                "title": "First Task",
+                "description": "description of the task",
+                "completed": false,
+                "priority": "medium",
+                "owner": {
+                  "_id": "65d4c5a6149337df96fd46ed",
+                  "firstName": "Jon",
+                  "lastName": "Do"
+                },
+                "createdAt": "2024-02-20T15:31:04.983Z",
+                "updatedAt": "2024-02-20T15:42:31.830Z",
+                "__v": 0
+              }
+            ]
+          },
+          "401": {
+            "description": "Unauthorized access",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "error": {
+                  "type": "string"
+                }
+              },
+              "x-examples": {
+                "Example 1": {
+                  "error": "Unauthorized. The provided token is invalid or has expired."
+                }
+              }
+            },
+            "examples": [
+              {
+                "error": "Unauthorized. The provided token is invalid or has expired."
+              }
+            ]
+          },
+          "403": {
+            "description": "Access Denied",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "error": {
+                  "type": "string"
+                }
+              },
+              "x-examples": {
+                "Example 1": {
+                  "error": "Access denied. You do not have permission to access this resource."
+                }
+              }
+            },
+            "examples": [
+              {
+                "error": "Access denied. You do not have permission to access this resource."
+              }
+            ]
+          },
+          "404": {
+            "description": "Not Found",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "error": {
+                  "type": "string"
+                }
+              },
+              "x-examples": {
+                "Example 1": {
+                  "error": "Task with ID '65d5277f798cf25fa57c8237' not found"
+                }
+              }
+            },
+            "examples": [
+              {
+                "error": "Task with ID '65d5277f798cf25fa57c8237' not found"
+              }
+            ]
+          },
+          "500": {
+            "description": "Internal Server Error",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "error": {
+                  "type": "string"
+                }
+              },
+              "x-examples": {
+                "Example 1": {
+                  "error": "Internal Server Error"
+                }
+              }
+            },
+            "examples": [
+              {
+                "error": "Internal server error"
+              }
+            ]
+          }
+        },
+        "operationId": "GetTaskById",
+        "description": "Get a task by Id. Only authenticated user ( admin and the owner of the task) can access this endpoint.",
+        "security": [
+          {
+            "BearerAuth": []
+          }
+        ]
+      },
+      "patch": {
+        "summary": "Update a Task",
+        "tags": ["Task"],
+        "responses": {
+          "200": {
+            "description": "Ok",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "title": {
+                  "type": "string"
+                },
+                "description": {
+                  "type": "string"
+                },
+                "completed": {
+                  "type": "boolean"
+                },
+                "priority": {
+                  "type": "string"
+                }
+              },
+              "x-examples": {
+                "Example 1": {
+                  "title": " new title",
+                  "description": "description",
+                  "completed": false,
+                  "priority": "medium"
+                }
+              }
+            },
+            "examples": [
+              {
+                "_id": "65d4c5b8149337df96fd46f4",
+                "title": "updated title",
+                "description": "description",
+                "completed": false,
+                "priority": "medium",
+                "owner": "65d4c5a6149337df96fd46ed",
+                "createdAt": "2024-02-20T15:31:04.983Z",
+                "updatedAt": "2024-02-20T23:08:27.663Z",
+                "__v": 0
+              }
+            ]
+          },
+          "401": {
+            "description": "Unauthorized access",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "error": {
+                  "type": "string"
+                }
+              },
+              "x-examples": {
+                "Example 1": {
+                  "error": "Unauthorized. The provided token is invalid or has expired."
+                }
+              }
+            },
+            "examples": [
+              {
+                "error": "Unauthorized. The provided token is invalid or has expired."
+              }
+            ]
+          },
+          "403": {
+            "description": "Access Denied",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "error": {
+                  "type": "string"
+                }
+              },
+              "x-examples": {
+                "Example 1": {
+                  "error": "Access denied. You do not have permission to access this resource."
+                }
+              }
+            },
+            "examples": [
+              {
+                "error": "Access denied. You do not have permission to access this resource."
+              }
+            ]
+          },
+          "404": {
+            "description": "Not Found",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "error": {
+                  "type": "string"
+                }
+              },
+              "x-examples": {
+                "Example 1": {
+                  "error": "Task with ID '65d5277f798cf25fa57c8237' not found"
+                }
+              }
+            },
+            "examples": [
+              {
+                "error": "Task with ID '65d5277f798cf25fa57c8237' not found"
+              }
+            ]
+          },
+          "500": {
+            "description": "Internal Server Error",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "error": {
+                  "type": "string"
+                }
+              },
+              "x-examples": {
+                "Example 1": {
+                  "error": "Internal Server Error"
+                }
+              }
+            },
+            "examples": [
+              {
+                "error": "Internal server error"
+              }
+            ]
+          }
+        },
+        "operationId": "Update task",
+        "description": "Update a Task by id. Only authenticated user ( admin and the owner of the task) can access this endpoint.",
+        "parameters": [
+          {
+            "in": "body",
+            "name": "body",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "title": {
+                  "type": "string"
+                },
+                "description": {
+                  "type": "string"
+                },
+                "completed": {
+                  "type": "boolean"
+                },
+                "priority": {
+                  "type": "string"
+                }
+              },
+              "x-examples": {
+                "Example 1": {
+                  "title": "string",
+                  "description": "string",
+                  "completed": true,
+                  "priority": "string"
+                }
+              }
+            },
+            "x-examples": [
+              {
+                "title": "new title",
+                "description": "new description",
+                "completed": false,
+                "priority": "low"
+              }
+            ],
+            "description": ""
+          }
+        ],
+        "security": [
+          {
+            "BearerAuth": []
+          }
+        ]
+      },
+      "delete": {
+        "summary": "Delete a Task",
+        "tags": ["Task"],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "schema": {
+              "type": "object",
+              "properties": {}
+            },
+            "examples": [true]
+          },
+          "401": {
+            "description": "Unauthorized access",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "error": {
+                  "type": "string"
+                }
+              },
+              "x-examples": {
+                "Example 1": {
+                  "error": "Unauthorized. The provided token is invalid or has expired."
+                }
+              }
+            },
+            "examples": [
+              {
+                "error": "Unauthorized. The provided token is invalid or has expired."
+              }
+            ]
+          },
+          "403": {
+            "description": "Access Denied",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "error": {
+                  "type": "string"
+                }
+              },
+              "x-examples": {
+                "Example 1": {
+                  "error": "Access denied. You do not have permission to access this resource."
+                }
+              }
+            },
+            "examples": [
+              {
+                "error": "Access denied. You do not have permission to access this resource."
+              }
+            ]
+          },
+          "404": {
+            "description": "Not Found",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "error": {
+                  "type": "string"
+                }
+              },
+              "x-examples": {
+                "Example 1": {
+                  "error": "Task with ID '65d5277f798cf25fa57c8237' not found"
+                }
+              }
+            },
+            "examples": [
+              {
+                "error": "Task with ID '65d5277f798cf25fa57c8237' not found"
+              }
+            ]
+          },
+          "500": {
+            "description": "Internal Server Error",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "error": {
+                  "type": "string"
+                }
+              },
+              "x-examples": {
+                "Example 1": {
+                  "error": "Internal Server Error"
+                }
+              }
+            },
+            "examples": [
+              {
+                "error": "Internal server error"
+              }
+            ]
+          }
+        },
+        "operationId": "DeleteTask",
+        "description": "Delete a task by id. Only authenticated user ( admin and the owner of the task) can access this endpoint.",
+        "security": [
+          {
+            "BearerAuth": []
+          }
+        ]
+      },
+      "parameters": []
+    },
+    "/users": {
+      "get": {
+        "summary": "Get all users",
+        "tags": ["User"],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "schema": {
+              "type": "array",
+              "items": {
+                "type": "object",
+                "properties": {
+                  "_id": {
+                    "type": "string"
+                  },
+                  "firstName": {
+                    "type": "string"
+                  },
+                  "lastName": {
+                    "type": "string"
+                  },
+                  "email": {
+                    "type": "string"
+                  },
+                  "role": {
+                    "type": "string"
+                  },
+                  "createdAt": {
+                    "type": "string"
+                  },
+                  "updatedAt": {
+                    "type": "string"
+                  },
+                  "__v": {
+                    "type": "integer"
+                  }
+                }
+              },
+              "x-examples": {
+                "Example 1": [
+                  {
+                    "_id": "65d4c5a6149337df96fd46ed",
+                    "firstName": "adel",
+                    "lastName": "chelabi",
+                    "email": "adel.chelabi@gmail.com",
+                    "role": "admin",
+                    "createdAt": "2024-02-20T15:30:46.812Z",
+                    "updatedAt": "2024-02-20T15:30:46.812Z",
+                    "__v": 0
+                  },
+                  {
+                    "_id": "65d4c5aa149337df96fd46f0",
+                    "firstName": "Ali",
+                    "lastName": "chelabi",
+                    "email": "ali.chelabi@gmail.com",
+                    "role": "user",
+                    "createdAt": "2024-02-20T15:30:50.424Z",
+                    "updatedAt": "2024-02-20T15:30:50.424Z",
+                    "__v": 0
+                  }
+                ]
+              }
+            },
+            "examples": [
+              [
+                {
+                  "_id": "65d4c5a6149337df96fd46ed",
+                  "firstName": "adel",
+                  "lastName": "chelabi",
+                  "email": "adel.chelabi@gmail.com",
+                  "role": "admin",
+                  "createdAt": "2024-02-20T15:30:46.812Z",
+                  "updatedAt": "2024-02-20T15:30:46.812Z",
+                  "__v": 0
+                },
+                {
+                  "_id": "65d4c5aa149337df96fd46f0",
+                  "firstName": "Ali",
+                  "lastName": "chelabi",
+                  "email": "ali.chelabi@gmail.com",
+                  "role": "user",
+                  "createdAt": "2024-02-20T15:30:50.424Z",
+                  "updatedAt": "2024-02-20T15:30:50.424Z",
+                  "__v": 0
+                }
+              ]
+            ]
+          },
+          "401": {
+            "description": "Unauthorized access",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "error": {
+                  "type": "string"
+                }
+              },
+              "x-examples": {
+                "Example 1": {
+                  "error": "Unauthorized. The provided token is invalid or has expired."
+                }
+              }
+            },
+            "examples": [
+              {
+                "error": "Unauthorized. The provided token is invalid or has expired."
+              }
+            ]
+          },
+          "403": {
+            "description": "Access Denied",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "error": {
+                  "type": "string"
+                }
+              },
+              "x-examples": {
+                "Example 1": {
+                  "error": "Access denied. You do not have permission to access this resource."
+                }
+              }
+            },
+            "examples": [
+              {
+                "error": "Access denied. You do not have permission to access this resource."
+              }
+            ]
+          },
+          "500": {
+            "description": "Internal Server Error",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "error": {
+                  "type": "string"
+                }
+              },
+              "x-examples": {
+                "Example 1": {
+                  "error": "Internal Server Error"
+                }
+              }
+            },
+            "examples": [
+              {
+                "error": "Internal server error"
+              }
+            ]
+          }
+        },
+        "operationId": "GetAllUsers",
+        "description": "Get All Users. Only Admin can access this endpoint.",
+        "security": [
+          {
+            "BearerAuth": []
+          }
+        ],
+        "parameters": []
+      }
+    },
+    "/users/register": {
+      "post": {
+        "summary": "Register a new user",
+        "tags": ["User"],
+        "responses": {
+          "201": {
+            "description": "Created",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "firstName": {
+                  "type": "string"
+                },
+                "lastName": {
+                  "type": "string"
+                },
+                "email": {
+                  "type": "string"
+                },
+                "role": {
+                  "type": "string"
+                },
+                "_id": {
+                  "type": "string"
+                },
+                "createdAt": {
+                  "type": "string"
+                },
+                "updatedAt": {
+                  "type": "string"
+                },
+                "__v": {
+                  "type": "integer"
+                }
+              },
+              "x-examples": {
+                "Example 1": {
+                  "firstName": "adel",
+                  "lastName": "chelabi",
+                  "email": "adel.chelabi@gmail.com",
+                  "role": "user",
+                  "_id": "65d538c21537b2d90cbdca0f",
+                  "createdAt": "2024-02-20T23:41:54.518Z",
+                  "updatedAt": "2024-02-20T23:41:54.518Z",
+                  "__v": 0
+                }
+              }
+            },
+            "examples": [
+              {
+                "firstName": "string",
+                "lastName": "string",
+                "email": "string",
+                "role": "user",
+                "_id": "string",
+                "createdAt": "string",
+                "updatedAt": "string",
+                "__v": 0
+              }
+            ]
+          }
+        },
+        "operationId": "RegisterNewUser",
+        "description": "Register a new user. Anyone can access this enpoint.",
+        "parameters": [
+          {
+            "in": "body",
+            "name": "body",
+            "schema": {
+              "type": "object",
+              "x-examples": {
+                "Example 1": {
+                  "firstName": "adel",
+                  "lastName": "chelabi",
+                  "email": "adel.chelabi@gmail.com",
+                  "password": "adel1234",
+                  "role": "user"
+                }
+              },
+              "properties": {
+                "firstName": {
+                  "type": "string"
+                },
+                "lastName": {
+                  "type": "string"
+                },
+                "email": {
+                  "type": "string"
+                },
+                "password": {
+                  "type": "string"
+                },
+                "role": {
+                  "type": "string",
+                  "description": "default value is user, acceptable values are user, viewer. Admin is created by system script"
+                }
+              },
+              "required": ["firstName", "lastName", "email", "password"]
+            },
+            "description": "",
+            "x-examples": [
+              {
+                "firstName": "adel",
+                "lastName": "chelabi",
+                "email": "adel.chelabi@gmail.com",
+                "password": "adel1234",
+                "role": "user"
+              }
+            ]
+          }
+        ]
+      }
+    },
+    "/users/login": {
+      "post": {
+        "summary": "Login",
+        "tags": ["User"],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "token": {
+                  "type": "string"
+                }
+              },
+              "x-examples": {
+                "Example 1": {
+                  "token": "token"
+                }
+              }
+            },
+            "examples": [
+              {
+                "token": "token"
+              }
+            ]
+          },
+          "401": {
+            "description": "Unauthorized access",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "error": {
+                  "type": "string"
+                }
+              },
+              "x-examples": {
+                "Example 1": {
+                  "error": "Unauthorized. The provided token is invalid or has expired."
+                }
+              }
+            },
+            "examples": [
+              {
+                "error": "Unauthorized. The provided token is invalid or has expired."
+              }
+            ]
+          },
+          "404": {
+            "description": "Not Found",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "error": {
+                  "type": "string"
+                }
+              },
+              "x-examples": {
+                "Example 1": {
+                  "error": "User with email 'ah.chelabi@gmail.com' not found"
+                }
+              }
+            },
+            "examples": [
+              {
+                "error": "User with email 'ah.chelabi@gmail.com' not found"
+              }
+            ]
+          },
+          "500": {
+            "description": "Internal Server Error",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "error": {
+                  "type": "string"
+                }
+              },
+              "x-examples": {
+                "Example 1": {
+                  "error": "Internal Server Error"
+                }
+              }
+            },
+            "examples": [
+              {
+                "error": "Internal server error"
+              }
+            ]
+          }
+        },
+        "operationId": "Login",
+        "description": "Login, anyone can access this endpoint.",
+        "parameters": [
+          {
+            "in": "body",
+            "name": "body",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "email": {
+                  "type": "string"
+                },
+                "password": {
+                  "type": "string"
+                }
+              },
+              "x-examples": {
+                "Example 1": {
+                  "email": "a.chelabi@gmail.com",
+                  "password": "adel1234"
+                }
+              }
+            },
+            "x-examples": [
+              {
+                "email": "adel.chelabi@gmail.com",
+                "password": "adel1234"
+              }
+            ]
+          }
+        ]
+      }
+    },
+    "/users/profile": {
+      "get": {
+        "summary": "Get authenticated user's profile",
+        "tags": ["User"],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "_id": {
+                  "type": "string"
+                },
+                "firstName": {
+                  "type": "string"
+                },
+                "lastName": {
+                  "type": "string"
+                },
+                "email": {
+                  "type": "string"
+                },
+                "role": {
+                  "type": "string"
+                },
+                "createdAt": {
+                  "type": "string"
+                },
+                "updatedAt": {
+                  "type": "string"
+                },
+                "__v": {
+                  "type": "integer"
+                }
+              },
+              "x-examples": {
+                "Example 1": {
+                  "_id": "65d4c5aa149337df96fd46f0",
+                  "firstName": "adel",
+                  "lastName": "chelabi",
+                  "email": "adel.chelabi@gmail.com",
+                  "role": "user",
+                  "createdAt": "2024-02-20T15:30:50.424Z",
+                  "updatedAt": "2024-02-20T15:30:50.424Z",
+                  "__v": 0
+                }
+              }
+            },
+            "examples": [
+              {
+                "_id": "65d4c5aa149337df96fd46f0",
+                "firstName": "adel",
+                "lastName": "chelabi",
+                "email": "a.chelabi@gmail.com",
+                "role": "user",
+                "createdAt": "2024-02-20T15:30:50.424Z",
+                "updatedAt": "2024-02-20T15:30:50.424Z",
+                "__v": 0
+              }
+            ]
+          },
+          "401": {
+            "description": "Unauthorized access",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "error": {
+                  "type": "string"
+                }
+              },
+              "x-examples": {
+                "Example 1": {
+                  "error": "Unauthorized. The provided token is invalid or has expired."
+                }
+              }
+            },
+            "examples": [
+              {
+                "error": "Unauthorized. The provided token is invalid or has expired."
+              }
+            ]
+          },
+          "500": {
+            "description": "Internal Server Error",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "error": {
+                  "type": "string"
+                }
+              },
+              "x-examples": {
+                "Example 1": {
+                  "error": "Internal Server Error"
+                }
+              }
+            },
+            "examples": [
+              {
+                "error": "Internal server error"
+              }
+            ]
+          }
+        },
+        "operationId": "GetAuthenticatedUserProfile",
+        "description": "Get the profile of authenticated user. Only authenticated user can access this endpoint.",
+        "security": [
+          {
+            "BearerAuth": []
+          }
+        ]
+      }
+    },
+    "/users/id": {
+      "get": {
+        "summary": "Get user by Id",
+        "operationId": "GetUserById",
+        "tags": ["User"],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "_id": {
+                  "type": "string"
+                },
+                "firstName": {
+                  "type": "string"
+                },
+                "lastName": {
+                  "type": "string"
+                },
+                "email": {
+                  "type": "string"
+                },
+                "role": {
+                  "type": "string"
+                },
+                "createdAt": {
+                  "type": "string"
+                },
+                "updatedAt": {
+                  "type": "string"
+                },
+                "__v": {
+                  "type": "integer"
+                }
+              },
+              "x-examples": {
+                "Example 1": {
+                  "_id": "65d4c5a6149337df96fd46ed",
+                  "firstName": "adel",
+                  "lastName": "chelabi",
+                  "email": "adel.chelabi@gmail.com",
+                  "role": "admin",
+                  "createdAt": "2024-02-20T15:30:46.812Z",
+                  "updatedAt": "2024-02-20T15:30:46.812Z",
+                  "__v": 0
+                }
+              }
+            },
+            "examples": {
+              "0": {
+                "_id": "65d4c5a6149337df96fd46ed",
+                "firstName": "adel",
+                "lastName": "chelabi",
+                "email": "adel.chelabi@gmail.com",
+                "role": "admin",
+                "createdAt": "2024-02-20T15:30:46.812Z",
+                "updatedAt": "2024-02-20T15:30:46.812Z",
+                "__v": 0
+              }
+            }
+          },
+          "401": {
+            "description": "Unauthorized access",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "error": {
+                  "type": "string"
+                }
+              },
+              "x-examples": {
+                "Example 1": {
+                  "error": "Unauthorized. The provided token is invalid or has expired."
+                }
+              }
+            },
+            "examples": [
+              {
+                "error": "Unauthorized. The provided token is invalid or has expired."
+              }
+            ]
+          },
+          "403": {
+            "description": "Access Denied",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "error": {
+                  "type": "string"
+                }
+              },
+              "x-examples": {
+                "Example 1": {
+                  "error": "Access denied. You do not have permission to access this resource."
+                }
+              }
+            },
+            "examples": [
+              {
+                "error": "Access denied. You do not have permission to access this resource."
+              }
+            ]
+          },
+          "404": {
+            "description": "Not Found",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "error": {
+                  "type": "string"
+                }
+              },
+              "x-examples": {
+                "Example 1": {
+                  "error": "User with id '65d479e7f2edd9c80e75634c' not found"
+                }
+              }
+            },
+            "examples": [
+              {
+                "error": "User with id '65d479e7f2edd9c80e75634c' not found"
+              }
+            ]
+          },
+          "500": {
+            "description": "Internal Server Error",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "error": {
+                  "type": "string"
+                }
+              },
+              "x-examples": {
+                "Example 1": {
+                  "error": "Internal Server Error"
+                }
+              }
+            },
+            "examples": [
+              {
+                "error": "Internal server error"
+              }
+            ]
+          }
+        },
+        "parameters": [],
+        "security": [
+          {
+            "BearerAuth": []
+          }
+        ],
+        "description": "Get a user by Id. Only authenticated user ( admin and the user itself) can access this endpoint."
+      },
+      "patch": {
+        "summary": "Update user",
+        "operationId": "UpdateUserById",
+        "tags": ["User"],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "_id": {
+                  "type": "string"
+                },
+                "firstName": {
+                  "type": "string"
+                },
+                "lastName": {
+                  "type": "string"
+                },
+                "email": {
+                  "type": "string"
+                },
+                "role": {
+                  "type": "string"
+                },
+                "createdAt": {
+                  "type": "string"
+                },
+                "updatedAt": {
+                  "type": "string"
+                },
+                "__v": {
+                  "type": "integer"
+                }
+              },
+              "x-examples": {
+                "Example 1": {
+                  "_id": "65d4c5a6149337df96fd46ed",
+                  "firstName": "adel",
+                  "lastName": "chelabi",
+                  "email": "adel.chelabi@gmail.com",
+                  "role": "admin",
+                  "createdAt": "2024-02-20T15:30:46.812Z",
+                  "updatedAt": "2024-02-21T09:45:50.129Z",
+                  "__v": 0
+                }
+              }
+            },
+            "examples": [
+              {
+                "_id": "65d4c5a6149337df96fd46ed",
+                "firstName": "adel",
+                "lastName": "chelabi",
+                "email": "adel.chelabi@gmail.com",
+                "role": "admin",
+                "createdAt": "2024-02-20T15:30:46.812Z",
+                "updatedAt": "2024-02-21T09:45:50.129Z",
+                "__v": 0
+              }
+            ]
+          },
+          "401": {
+            "description": "Unauthorized access",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "error": {
+                  "type": "string"
+                }
+              },
+              "x-examples": {
+                "Example 1": {
+                  "error": "Unauthorized. The provided token is invalid or has expired."
+                }
+              }
+            },
+            "examples": [
+              {
+                "error": "Unauthorized. The provided token is invalid or has expired."
+              }
+            ]
+          },
+          "403": {
+            "description": "Access Denied",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "error": {
+                  "type": "string"
+                }
+              },
+              "x-examples": {
+                "Example 1": {
+                  "error": "Access denied. You do not have permission to access this resource."
+                }
+              }
+            },
+            "examples": [
+              {
+                "error": "Access denied. You do not have permission to access this resource."
+              }
+            ]
+          },
+          "404": {
+            "description": "Not Found",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "error": {
+                  "type": "string"
+                }
+              },
+              "x-examples": {
+                "Example 1": {
+                  "error": "User with id '65d479e7f2edd9c80e75634c' not found"
+                }
+              }
+            },
+            "examples": [
+              {
+                "error": "User with id '65d479e7f2edd9c80e75634c' not found"
+              }
+            ]
+          },
+          "500": {
+            "description": "Internal Server Error",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "error": {
+                  "type": "string"
+                }
+              },
+              "x-examples": {
+                "Example 1": {
+                  "error": "Internal Server Error"
+                }
+              }
+            },
+            "examples": [
+              {
+                "error": "Internal server error"
+              }
+            ]
+          }
+        },
+        "description": "Update user's infos. Only authenticated user ( admin and the user itself) can access this endpoint.",
+        "security": [
+          {
+            "BearerAuth": []
+          }
+        ],
+        "parameters": [
+          {
+            "in": "body",
+            "name": "body",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "firstName": {
+                  "type": "string"
+                },
+                "lastName": {
+                  "type": "string"
+                },
+                "password": {
+                  "type": "string"
+                }
+              },
+              "x-examples": {
+                "Example 1": {
+                  "firstName": "adel",
+                  "lastName": "chelabi",
+                  "password": "new pass"
+                }
+              }
+            },
+            "x-examples": [
+              {
+                "firstName": "adel",
+                "lastName": "chelabi",
+                "password": "new pass"
+              }
+            ]
+          }
+        ]
+      },
+      "delete": {
+        "summary": "Delete user",
+        "operationId": "DeleteUserById",
+        "tags": ["User"],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "examples": [true]
+          },
+          "401": {
+            "description": "Unauthorized access",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "error": {
+                  "type": "string"
+                }
+              },
+              "x-examples": {
+                "Example 1": {
+                  "error": "Unauthorized. The provided token is invalid or has expired."
+                }
+              }
+            },
+            "examples": [
+              {
+                "error": "Unauthorized. The provided token is invalid or has expired."
+              }
+            ]
+          },
+          "403": {
+            "description": "Access Denied",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "error": {
+                  "type": "string"
+                }
+              },
+              "x-examples": {
+                "Example 1": {
+                  "error": "Access denied. You do not have permission to access this resource."
+                }
+              }
+            },
+            "examples": [
+              {
+                "error": "Access denied. You do not have permission to access this resource."
+              }
+            ]
+          },
+          "404": {
+            "description": "Not Found",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "error": {
+                  "type": "string"
+                }
+              },
+              "x-examples": {
+                "Example 1": {
+                  "error": "User with id '65d479e7f2edd9c80e75634c' not found"
+                }
+              }
+            },
+            "examples": [
+              {
+                "error": "User with id '65d479e7f2edd9c80e75634c' not found"
+              }
+            ]
+          },
+          "500": {
+            "description": "Internal Server Error",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "error": {
+                  "type": "string"
+                }
+              },
+              "x-examples": {
+                "Example 1": {
+                  "error": "Internal Server Error"
+                }
+              }
+            },
+            "examples": [
+              {
+                "error": "Internal server error"
+              }
+            ]
+          }
+        },
+        "description": "Delete a user. Only authenticated user ( admin and the user itself) can access this endpoint.",
+        "security": [
+          {
+            "BearerAuth": []
+          }
+        ]
+      }
+    },
+    "/users/profile/tasks": {
+      "get": {
+        "summary": "Get authenticated user's Tasks",
+        "tags": ["User", "Task"],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "schema": {
+              "type": "array",
+              "items": {
+                "type": "object",
+                "properties": {
+                  "_id": {
+                    "type": "string"
+                  },
+                  "title": {
+                    "type": "string"
+                  },
+                  "description": {
+                    "type": "string"
+                  },
+                  "completed": {
+                    "type": "boolean"
+                  },
+                  "priority": {
+                    "type": "string"
+                  },
+                  "owner": {
+                    "type": "object",
+                    "properties": {
+                      "_id": {
+                        "type": "string"
+                      },
+                      "firstName": {
+                        "type": "string"
+                      },
+                      "lastName": {
+                        "type": "string"
+                      }
+                    }
+                  },
+                  "createdAt": {
+                    "type": "string"
+                  },
+                  "updatedAt": {
+                    "type": "string"
+                  },
+                  "__v": {
+                    "type": "integer"
+                  }
+                }
+              },
+              "x-examples": {
+                "Example 1": [
+                  {
+                    "_id": "65d52748798cf25fa57c8236",
+                    "title": "authenticated task",
+                    "description": "description of the task",
+                    "completed": false,
+                    "priority": "medium",
+                    "owner": {
+                      "_id": "65d4c5a6149337df96fd46ed",
+                      "firstName": "adel",
+                      "lastName": "chelabi"
+                    },
+                    "createdAt": "2024-02-20T22:27:20.538Z",
+                    "updatedAt": "2024-02-20T22:27:20.538Z",
+                    "__v": 0
+                  }
+                ]
+              }
+            },
+            "examples": [
+              [
+                {
+                  "_id": "65d52748798cf25fa57c8236",
+                  "title": "authenticated task",
+                  "description": "description of the task",
+                  "completed": false,
+                  "priority": "medium",
+                  "owner": {
+                    "_id": "65d4c5a6149337df96fd46ed",
+                    "firstName": "adel",
+                    "lastName": "chelabi"
+                  },
+                  "createdAt": "2024-02-20T22:27:20.538Z",
+                  "updatedAt": "2024-02-20T22:27:20.538Z",
+                  "__v": 0
+                }
+              ]
+            ]
+          },
+          "401": {
+            "description": "Unauthorized access",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "error": {
+                  "type": "string"
+                }
+              },
+              "x-examples": {
+                "Example 1": {
+                  "error": "Unauthorized. The provided token is invalid or has expired."
+                }
+              }
+            },
+            "examples": [
+              {
+                "error": "Unauthorized. The provided token is invalid or has expired."
+              }
+            ]
+          },
+          "500": {
+            "description": "Internal Server Error",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "error": {
+                  "type": "string"
+                }
+              },
+              "x-examples": {
+                "Example 1": {
+                  "error": "Internal Server Error"
+                }
+              }
+            },
+            "examples": [
+              {
+                "error": "Internal server error"
+              }
+            ]
+          }
+        },
+        "operationId": "GetAUthenticatedUserTask",
+        "description": "Get all tasks of the authenticated user. Only authenticated user can access this endpoint.",
+        "security": [
+          {
+            "BearerAuth": []
+          }
+        ]
+      }
+    },
+    "/users/id/tasks": {
+      "get": {
+        "summary": "Get Tasks by user id",
+        "tags": ["User", "Task"],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "schema": {
+              "type": "array",
+              "items": {
+                "type": "object",
+                "properties": {
+                  "_id": {
+                    "type": "string"
+                  },
+                  "title": {
+                    "type": "string"
+                  },
+                  "description": {
+                    "type": "string"
+                  },
+                  "completed": {
+                    "type": "boolean"
+                  },
+                  "priority": {
+                    "type": "string"
+                  },
+                  "owner": {
+                    "type": "object",
+                    "properties": {
+                      "_id": {
+                        "type": "string"
+                      },
+                      "firstName": {
+                        "type": "string"
+                      },
+                      "lastName": {
+                        "type": "string"
+                      }
+                    }
+                  },
+                  "createdAt": {
+                    "type": "string"
+                  },
+                  "updatedAt": {
+                    "type": "string"
+                  },
+                  "__v": {
+                    "type": "integer"
+                  }
+                }
+              },
+              "x-examples": {
+                "Example 1": [
+                  {
+                    "_id": "65d52748798cf25fa57c8236",
+                    "title": "authenticated task",
+                    "description": "description of the task",
+                    "completed": false,
+                    "priority": "medium",
+                    "owner": {
+                      "_id": "65d4c5a6149337df96fd46ed",
+                      "firstName": "adel",
+                      "lastName": "chelabi"
+                    },
+                    "createdAt": "2024-02-20T22:27:20.538Z",
+                    "updatedAt": "2024-02-20T22:27:20.538Z",
+                    "__v": 0
+                  }
+                ]
+              }
+            },
+            "examples": [
+              [
+                {
+                  "_id": "65d52748798cf25fa57c8236",
+                  "title": "authenticated task",
+                  "description": "description of the task",
+                  "completed": false,
+                  "priority": "medium",
+                  "owner": {
+                    "_id": "65d4c5a6149337df96fd46ed",
+                    "firstName": "adel",
+                    "lastName": "chelabi"
+                  },
+                  "createdAt": "2024-02-20T22:27:20.538Z",
+                  "updatedAt": "2024-02-20T22:27:20.538Z",
+                  "__v": 0
+                }
+              ]
+            ]
+          },
+          "401": {
+            "description": "Unauthorized access",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "error": {
+                  "type": "string"
+                }
+              },
+              "x-examples": {
+                "Example 1": {
+                  "error": "Unauthorized. The provided token is invalid or has expired."
+                }
+              }
+            },
+            "examples": [
+              {
+                "error": "Unauthorized. The provided token is invalid or has expired."
+              }
+            ]
+          },
+          "403": {
+            "description": "Access Denied",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "error": {
+                  "type": "string"
+                }
+              },
+              "x-examples": {
+                "Example 1": {
+                  "error": "Access denied. You do not have permission to access this resource."
+                }
+              }
+            },
+            "examples": [
+              {
+                "error": "Access denied. You do not have permission to access this resource."
+              }
+            ]
+          },
+          "500": {
+            "description": "Internal Server Error",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "error": {
+                  "type": "string"
+                }
+              },
+              "x-examples": {
+                "Example 1": {
+                  "error": "Internal Server Error"
+                }
+              }
+            },
+            "examples": [
+              {
+                "error": "Internal server error"
+              }
+            ]
+          }
+        },
+        "operationId": "GetTasksByUserId",
+        "description": "Get all tasks by user id . Only Admin can access this endpoint.",
+        "security": [
+          {
+            "BearerAuth": []
+          }
+        ]
+      }
+    }
+  },
+  "definitions": {
+    "Task": {
+      "type": "object",
+      "properties": {
+        "_id": {
+          "type": "string",
+          "example": "65d4c5b8149337df96fd46f4"
+        },
+        "title": {
+          "type": "string",
+          "example": "Create a rest api"
+        },
+        "description": {
+          "type": "string",
+          "example": "Create a rest api using express, typescript and mongodb"
+        },
+        "completed": {
+          "type": "boolean",
+          "example": false
+        },
+        "priority": {
+          "type": "string",
+          "example": "medium"
+        },
+        "owner": {
+          "$ref": "#/definitions/Owner"
+        },
+        "createdAt": {
+          "type": "string",
+          "example": "2024-02-20T15:31:04.983Z"
+        },
+        "updatedAt": {
+          "type": "string",
+          "example": "2024-02-20T15:42:31.830Z"
+        },
+        "__v": {
+          "type": "integer",
+          "example": 0
+        }
+      }
+    },
+    "Owner": {
+      "type": "object",
+      "properties": {
+        "_id": {
+          "type": "string",
+          "example": "65d4c5a6149337df96fd46ed"
+        },
+        "firstName": {
+          "type": "string",
+          "example": "Jon"
+        },
+        "lastName": {
+          "type": "string",
+          "example": "Do"
+        }
+      }
+    },
+    "Error": {
+      "type": "object",
+      "properties": {
+        "message": {
+          "type": "string",
+          "example": "Unauthorized: Access token is missing or invalid"
+        }
+      }
+    }
+  },
+  "securityDefinitions": {
+    "BearerAuth": {
+      "type": "apiKey",
+      "name": "Authorization",
+      "in": "header"
+    }
+  }
+}

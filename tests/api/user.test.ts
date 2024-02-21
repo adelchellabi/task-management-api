@@ -47,7 +47,7 @@ describe("", () => {
       const response = await request(app)
         .get(BASE_URL)
         .expect(StatusCodes.UNAUTHORIZED);
-      expect(response.body.error).toBe("Unauthorized. Please provide a token");
+      expect(response.body.error).toBe("Unauthorized. The provided token is invalid or has expired.");
     });
 
     it("should return unauthorized when trying to update a user without authentication", async () => {
@@ -55,7 +55,7 @@ describe("", () => {
       const response = await request(app)
         .patch(`${BASE_URL}/${id}`)
         .expect(StatusCodes.UNAUTHORIZED);
-      expect(response.body.error).toBe("Unauthorized. Please provide a token");
+      expect(response.body.error).toBe("Unauthorized. The provided token is invalid or has expired.");
     });
   });
 

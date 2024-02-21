@@ -19,7 +19,7 @@ export class BaseController {
     details?: any;
   } {
     let statusCode = StatusCodes.INTERNAL_SERVER_ERROR;
-    let errorMessage = "Internal server error";
+    let errorMessage = "Internal Server Error";
     let details;
 
     switch (true) {

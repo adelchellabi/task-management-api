@@ -53,6 +53,7 @@ router.get(
   isAuthenticated,
   userController.getTasksForCurrentUser
 );
+
 router.get(
   "/:id/tasks",
   isAuthenticated,
