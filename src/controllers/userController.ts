@@ -9,7 +9,6 @@ import {
 import { UserServiceInterface } from "../services/interfaces/userServiceInterface";
 import { handleDtoValidation } from "../dtos/helper";
 import { BaseController } from "./baseController";
-import { ResourceAlreadyExistsError } from "../exceptions/RessourceAlreadyExistsError";
 import { UnauthorizedError } from "../exceptions/UnauthorizedError";
 import { generateToken } from "../utils/utils";
 import { AuthenticatedRequest } from "../middleware/authMiddleware";
@@ -23,20 +22,11 @@ export class UserController extends BaseController {
   public register = async (req: Request, res: Response) => {
     try {
       const userData = await handleDtoValidation(req.body, RegisterDTO);
-      await this.checkUserExists(userData.email);
+
       const user = await this.userService.createUser(userData);
       res.status(StatusCodes.CREATED).json(user);
     } catch (error: any) {
       this.handleRequestError(error, res);
-    }
-  };
-
-  private checkUserExists = async (email: string) => {
-    const existingUser = await this.userService.findUserByEmail(email);
-    if (existingUser) {
-      throw new ResourceAlreadyExistsError(
-        `User with email '${email}' already exists`
-      );
     }
   };
 

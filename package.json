@@ -7,7 +7,8 @@
     "start": "NODE_ENV=production node dist/server.js",
     "dev": "NODE_ENV=development nodemon --exec ts-node-dev src/server.ts",
     "build": "tsc",
-    "test": "NODE_ENV=test jest --runInBand"
+    "test": "NODE_ENV=test jest --runInBand",
+    "generate-admin": "ts-node src/cli.ts generate-admin"
   },
   "keywords": [],
   "author": "",
@@ -35,7 +36,8 @@
     "supertest": "^6.3.4",
     "swagger-ui-express": "^5.0.0",
     "typescript": "^5.3.3",
-    "winston": "^3.11.0"
+    "winston": "^3.11.0",
+    "yargs": "^17.7.2"
   },
   "devDependencies": {
     "@faker-js/faker": "^8.4.1",
