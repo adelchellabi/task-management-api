@@ -54,7 +54,7 @@ To run the Task Management API locally, you'll need Docker and Docker Compose in
 - HTTPS :
 
   ```bash
-   git clone https://github.com/your-username/task-management-api.git
+   git clone https://github.com/adelchellabi/task-management-api.git
   ```
 
 - SSH :
