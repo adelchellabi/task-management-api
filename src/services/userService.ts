@@ -7,6 +7,7 @@ import { hashPassword } from "../utils/utils";
 import { TaskService } from "./taskService";
 import { TaskServiceInterface } from "./interfaces/taskServiceInterface";
 import { TaskDocumentInterface } from "../models/task";
+import { ResourceAlreadyExistsError } from "../exceptions/RessourceAlreadyExistsError";
 
 export class UserService implements UserServiceInterface {
   taskService: TaskServiceInterface;
@@ -19,12 +20,22 @@ export class UserService implements UserServiceInterface {
     userData: RegisterDTO
   ): Promise<UserDocumentInterface> {
     try {
+      await this.checkUserExists(userData.email);
       const hashedPassword = await hashPassword(userData.password);
       return await User.create({ ...userData, password: hashedPassword });
     } catch (error) {
       throw error;
     }
   }
+
+  private checkUserExists = async (email: string) => {
+    const existingUser = await this.findUserByEmail(email);
+    if (existingUser) {
+      throw new ResourceAlreadyExistsError(
+        `User with email '${email}' already exists`
+      );
+    }
+  };
 
   public async findUserById(id: string): Promise<UserDocumentInterface> {
     try {
