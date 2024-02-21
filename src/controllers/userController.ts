@@ -104,7 +104,7 @@ export class UserController extends BaseController {
   ): Promise<void> => {
     try {
       if (!req.user) {
-        throw new UnauthorizedError("Unauthorized. Please provide a token");
+        throw new UnauthorizedError();
       }
 
       const userProfile = await this.userService.findUserById(req.user.id);

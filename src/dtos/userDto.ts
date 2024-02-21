@@ -34,10 +34,11 @@ export class RegisterDTO {
 
   @IsString()
   @IsNotEmpty()
+  @IsOptional()
   @IsEnum(userRoleValues, {
     message: "Role must be one of the following values: $constraint1",
   })
-  role!: UserRole;
+  role?: UserRole;
 }
 
 export class LoginDTO {

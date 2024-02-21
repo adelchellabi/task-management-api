@@ -18,6 +18,7 @@
     "@types/jsonwebtoken": "^9.0.5",
     "@types/morgan": "^1.9.9",
     "@types/supertest": "^6.0.2",
+    "@types/swagger-ui-express": "^4.1.6",
     "@types/winston": "^2.4.4",
     "bcryptjs": "^2.4.3",
     "class-transformer": "^0.5.1",
@@ -32,6 +33,7 @@
     "mongoose": "^8.1.2",
     "morgan": "^1.10.0",
     "supertest": "^6.3.4",
+    "swagger-ui-express": "^5.0.0",
     "typescript": "^5.3.3",
     "winston": "^3.11.0"
   },

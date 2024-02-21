@@ -25,7 +25,9 @@ export function isAuthenticated(
     const authHeader = req.headers["authorization"];
     const token = authHeader && authHeader.split(" ")[1];
     if (!token) {
-      throw new UnauthorizedError("Unauthorized. Please provide a token");
+      throw new UnauthorizedError(
+        "Unauthorized. The provided token is invalid or has expired."
+      );
     }
     jwt.verify(
       token,
@@ -46,7 +48,7 @@ export function isAuthenticated(
     } else {
       res
         .status(StatusCodes.INTERNAL_SERVER_ERROR)
-        .json({ error: "Internal server error" });
+        .json({ error: "Internal Server Error" });
     }
   }
 }
@@ -64,7 +66,7 @@ export function authorizeRoles(roles: UserRole[]) {
       } else {
         res
           .status(StatusCodes.INTERNAL_SERVER_ERROR)
-          .json({ error: "Internal server error" });
+          .json({ error: "Internal Server Error" });
       }
     }
   };
@@ -80,7 +82,7 @@ export const checkOwnershipAuthorization = <T>(
   ) => {
     try {
       if (!req.user) {
-        throw new UnauthorizedError("Unauthorized. Please provide a token");
+        throw new UnauthorizedError();
       }
       const { id: authenticatedUserId, role: userRole } =
         req.user as TokenUserData;
@@ -107,7 +109,7 @@ export const checkOwnershipAuthorization = <T>(
       } else {
         res
           .status(StatusCodes.INTERNAL_SERVER_ERROR)
-          .json({ error: "Internal server error" });
+          .json({ error: "Internal Server Error" });
       }
     }
   };

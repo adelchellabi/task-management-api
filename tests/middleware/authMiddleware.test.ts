@@ -50,7 +50,7 @@ describe("isAuthenticated middleware", () => {
     isAuthenticated(req as AuthenticatedRequest, res as Response, next);
     expect(res.status).toHaveBeenCalledWith(StatusCodes.UNAUTHORIZED);
     expect(res.json).toHaveBeenCalledWith({
-      error: "Unauthorized. Please provide a token",
+      error: "Unauthorized. The provided token is invalid or has expired.",
     });
   });
 
@@ -203,6 +203,6 @@ describe("checkOwnershipAuthorization middleware", () => {
       next
     );
     expect(res.status).toHaveBeenCalledWith(StatusCodes.INTERNAL_SERVER_ERROR);
-    expect(res.json).toHaveBeenCalledWith({ error: "Internal server error" });
+    expect(res.json).toHaveBeenCalledWith({ error: "Internal Server Error" });
   });
 });
