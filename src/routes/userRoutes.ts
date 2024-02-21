@@ -57,7 +57,7 @@ router.get(
 router.get(
   "/:id/tasks",
   isAuthenticated,
-  authorizeRoles([UserRole.ADMIN]),
+  authorizeRoles([UserRole.ADMIN, UserRole.SUPER_USER]),
   userController.getTasksByUserId
 );
 export default router;

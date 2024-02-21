@@ -4,8 +4,9 @@ import Task from "./task";
 export enum UserRole {
   USER = "user",
   ADMIN = "admin",
+  SUPER_USER = "super_user",
 }
-export const userRoleValues = [UserRole.USER] as const;
+export const userRoleValues = [UserRole.USER, UserRole.SUPER_USER] as const;
 export interface UserInterface {
   firstName: string;
   lastName: string;
