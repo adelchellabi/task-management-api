@@ -1,4 +1,4 @@
-import { NextFunction, Request, Response, Router } from "express";
+import { Request, Response, Router } from "express";
 import taskRoutes from "./taskRoutes";
 import userRouter from "./userRoutes";
 import swaggerUi from "swagger-ui-express";
@@ -8,16 +8,10 @@ const router = Router();
 
 router.use("/tasks", taskRoutes);
 router.use("/users", userRouter);
-
 router.use("/api-docs", swaggerUi.serve, swaggerUi.setup(swaggerDocument));
 
-router.use(customErrorMiddleware);
+router.get('/', (req: Request, res: Response) => {
+  res.redirect('/api/v1/api-docs');
+});
 
 export default router;
-export function customErrorMiddleware(
-  req: Request,
-  res: Response,
-  next: NextFunction
-) {
-  res.status(404).json({ error: "Route not found" });
-}
