@@ -20,6 +20,7 @@ app.use(morganMiddleware);
 connectDB();
 
 app.use("/api/v1", routes);
+
 app.use(routeNotFoundErrorMiddleware);
 
 export default app;

@@ -46,5 +46,6 @@ export function routeNotFoundErrorMiddleware(
   res: Response,
   next: NextFunction
 ) {
+  if (req.path === "/") return res.redirect("/api/v1/api-docs");
   res.status(StatusCodes.NOT_FOUND).json({ error: "Route not found" });
 }
