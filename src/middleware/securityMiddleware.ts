@@ -1,6 +1,7 @@
 import express, { Request, Response, NextFunction } from "express";
 import helmet from "helmet";
 import rateLimit from "express-rate-limit";
+import { StatusCodes } from "http-status-codes";
 
 const allowedOrigins = ["http://localhost"];
 
@@ -38,4 +39,12 @@ export function setupSecurityMiddleware(app: express.Application): void {
   app.use(setSecurityHeaders);
   app.use(handleCors);
   app.use(setRateLimit);
+}
+
+export function routeNotFoundErrorMiddleware(
+  req: Request,
+  res: Response,
+  next: NextFunction
+) {
+  res.status(StatusCodes.NOT_FOUND).json({ error: "Route not found" });
 }

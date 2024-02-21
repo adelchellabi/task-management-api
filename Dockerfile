@@ -4,6 +4,9 @@ FROM node:18-alpine as base
 # Set working directory
 WORKDIR /app
 
+# Install nodemon globally
+RUN npm install -g nodemon ts-node-dev
+
 # Install app dependencies
 COPY package*.json ./
 RUN npm install
