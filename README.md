@@ -72,7 +72,7 @@ To run the Task Management API locally, you'll need Docker and Docker Compose in
 3. Copy the env.example file to create a .env file:
 
    ```bash
-   cp env.example .env
+   cp .env.example .env
    ```
 
    This command creates a new .env file based on the provided example file. Make sure to fill in the necessary environment variables in the .env file with your own values.
